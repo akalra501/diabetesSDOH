@@ -5,74 +5,78 @@ import matplotlib.pyplot as plt
 import os
 
 # Cleaning the dataset
-df = pd.read_csv("nhanesMerge1999_2023.csv")
-dfCleaned = df.dropna()
-dfCleaned = dfCleaned[dfCleaned['EducationLevel'] < 6.0]
-dfCleaned.to_csv("nhanesMerge1999_2023_cleaned.csv", index=False)
+df = pd.read_csv("engineeredBinaryFeatures_REVISED.csv")
+df2 = df[df['ageGroup'] == "Senior_60+"]
+print(len(df2))
+df2.to_csv('nhanesSeniorCitizens.csv', index=False)
 
-dfUnder80 = dfCleaned[dfCleaned['Age'] < 80]
-dfOver80 = dfCleaned[dfCleaned['Age'] > 80]
-print('People over 80:', len(dfOver80))
+# dfCleaned = df.dropna()
+# dfCleaned = dfCleaned[dfCleaned['EducationLevel'] < 6.0]
+# dfCleaned.to_csv("nhanesMerge1999_2023_cleaned.csv", index=False)
 
-dfDiabetes = dfUnder80[dfUnder80['Diabetes'] == 1]
-dfNoDiabetes = dfUnder80[dfUnder80['Diabetes'] == 0]
+# dfUnder80 = dfCleaned[dfCleaned['Age'] < 80]
+# dfOver80 = dfCleaned[dfCleaned['Age'] > 80]
+# print('People over 80:', len(dfOver80))
 
-os.makedirs('plots', exist_ok=True)
+# dfDiabetes = dfUnder80[dfUnder80['Diabetes'] == 1]
+# dfNoDiabetes = dfUnder80[dfUnder80['Diabetes'] == 0]
 
-# Helper: Add stats to subplot
-def addStats(ax, data, variable):
-    meanVal = data[variable].mean()
-    medianVal = data[variable].median()
-    stdVal = data[variable].std()
-    count = data[variable].count()
+# os.makedirs('plots', exist_ok=True)
+
+# # Helper: Add stats to subplot
+# def addStats(ax, data, variable):
+#     meanVal = data[variable].mean()
+#     medianVal = data[variable].median()
+#     stdVal = data[variable].std()
+#     count = data[variable].count()
     
-    ax.text(
-        0.95, 0.95,
-        f"count = {count}\nmean = {meanVal:.2f}\nstdev = {stdVal:.2f}\nmedian = {medianVal:.2f}",
-        transform=ax.transAxes,
-        ha='right',
-        va='top',
-        fontsize=8,
-        bbox=dict(boxstyle="round", facecolor="white", edgecolor="gray", alpha=0.7)
-    )
+#     ax.text(
+#         0.95, 0.95,
+#         f"count = {count}\nmean = {meanVal:.2f}\nstdev = {stdVal:.2f}\nmedian = {medianVal:.2f}",
+#         transform=ax.transAxes,
+#         ha='right',
+#         va='top',
+#         fontsize=8,
+#         bbox=dict(boxstyle="round", facecolor="white", edgecolor="gray", alpha=0.7)
+#     )
 
-# -------------------------
-# Function to make side-by-side plots
-# -------------------------
-def makePlots(variable, plotType):
-    fig, axs = plt.subplots(1, 2, figsize=(12, 6), sharey=True)
+# # -------------------------
+# # Function to make side-by-side plots
+# # -------------------------
+# def makePlots(variable, plotType):
+#     fig, axs = plt.subplots(1, 2, figsize=(12, 6), sharey=True)
 
-    if plotType == 'hist':
-        sns.histplot(dfDiabetes[variable], ax=axs[0], color='red', bins=30)
-        sns.histplot(dfNoDiabetes[variable], ax=axs[1], color='green', bins=30)
-    elif plotType == 'count':
-        sns.countplot(x=variable, data=dfDiabetes, ax=axs[0], color='red')
-        sns.countplot(x=variable, data=dfNoDiabetes, ax=axs[1], color='green')
-    else:
-        raise ValueError('Enter correct plot type (hist or count)')
+#     if plotType == 'hist':
+#         sns.histplot(dfDiabetes[variable], ax=axs[0], color='red', bins=30)
+#         sns.histplot(dfNoDiabetes[variable], ax=axs[1], color='green', bins=30)
+#     elif plotType == 'count':
+#         sns.countplot(x=variable, data=dfDiabetes, ax=axs[0], color='red')
+#         sns.countplot(x=variable, data=dfNoDiabetes, ax=axs[1], color='green')
+#     else:
+#         raise ValueError('Enter correct plot type (hist or count)')
 
-    axs[0].set_title(f"{variable} (Diabetic Group)", fontsize=12)
-    axs[1].set_title(f"{variable} (Non-Diabetic Group)", fontsize=12)
-    axs[0].set_xlabel(variable, fontsize=8)
-    axs[1].set_xlabel(variable, fontsize=8)
-    axs[0].set_ylabel("Count", fontsize=8)
-    axs[1].set_ylabel("Count", fontsize=8)
+#     axs[0].set_title(f"{variable} (Diabetic Group)", fontsize=12)
+#     axs[1].set_title(f"{variable} (Non-Diabetic Group)", fontsize=12)
+#     axs[0].set_xlabel(variable, fontsize=8)
+#     axs[1].set_xlabel(variable, fontsize=8)
+#     axs[0].set_ylabel("Count", fontsize=8)
+#     axs[1].set_ylabel("Count", fontsize=8)
 
-    for ax, subset in zip(axs, [dfDiabetes, dfNoDiabetes]):
-        addStats(ax, subset, variable)
-        ax.tick_params(axis='x', labelsize=8)
-        ax.tick_params(axis='y', labelsize=8)
+#     for ax, subset in zip(axs, [dfDiabetes, dfNoDiabetes]):
+#         addStats(ax, subset, variable)
+#         ax.tick_params(axis='x', labelsize=8)
+#         ax.tick_params(axis='y', labelsize=8)
 
-    plt.tight_layout()
-    plt.savefig(f"plots/{variable}Distribution.png")
-    plt.close()
+#     plt.tight_layout()
+#     plt.savefig(f"plots/{variable}Distribution.png")
+#     plt.close()
 
-# Making plots
-makePlots('Age', 'hist')
-makePlots('IncomePovertyRatio', 'hist')
-makePlots('FastingGlucose', 'hist')
-makePlots('EducationLevel', 'count')
-makePlots('HasInsurance', 'count')
+# # Making plots
+# makePlots('Age', 'hist')
+# makePlots('IncomePovertyRatio', 'hist')
+# makePlots('FastingGlucose', 'hist')
+# makePlots('EducationLevel', 'count')
+# makePlots('HasInsurance', 'count')
 
 
 

@@ -3,10 +3,10 @@ import glob
 import re
 
 #loading in all the files.
-demo_files = sorted(glob.glob("demoData*.xpt"))
-diq_files  = sorted(glob.glob("diqData*.xpt"))
-hiq_files  = sorted(glob.glob("hiqData*.xpt"))
-glu_files  = sorted(glob.glob("gluData*.xpt"))
+demo_files = sorted(glob.glob("data/demoData*.xpt"))
+diq_files  = sorted(glob.glob("data/diqData*.xpt"))
+hiq_files  = sorted(glob.glob("data/hiqData*.xpt"))
+glu_files  = sorted(glob.glob("data/gluData*.xpt"))
 
 #loading helper function, and keeping certain columns.
 def load_and_trim(file, cycle, columns):
@@ -53,7 +53,16 @@ for file in hiq_files:
         continue
     df['cycle'] = cycle
     hiq_data.append(df)
+    
+print("Demo files found:", demo_files)
+print("DIQ files found:", diq_files)
+print("HIQ files found:", hiq_files)
+print("GLU files found:", glu_files)
 
+print("Demo dataframes loaded:", len(demo_data))
+print("DIQ dataframes loaded:", len(diq_data))
+print("HIQ dataframes loaded:", len(hiq_data))
+print("GLU dataframes loaded:", len(glu_data))
 #combining data from all the lists.
 demo_df = pd.concat(demo_data, ignore_index=True)
 diq_df  = pd.concat(diq_data, ignore_index=True)
@@ -64,7 +73,7 @@ glu_df  = pd.concat(glu_data, ignore_index=True)
 #merging into a singular dataset.
 merged = demo_df.merge(diq_df, on=['SEQN', 'cycle'], how='inner')
 merged = merged.merge(hiq_df, on=['SEQN', 'cycle'], how='left')  
-merged = merged.merge(glu_df, on=['SEQN', 'cycle'], how='inner')
+merged = merged.merge(glu_df, on=['SEQN', 'cycle'], how='left')
 
 #cleaning and mappting variables.
 merged['diabetes'] = merged['DIQ010'].map({1: 1, 2: 0})
@@ -87,4 +96,4 @@ merged.rename(columns={
 }, inplace=True)
 
 #merging into one file.
-merged.to_csv("nhanesMerge1999_2023.csv", index=False)
+merged.to_csv("nhanesMerge1999_2023_REVISED.csv", index=False)
