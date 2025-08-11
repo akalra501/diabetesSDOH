@@ -1,5 +1,3 @@
-# ===== SMOTE + Feature Importance for LR / RF / XGB (camelCase) =====
-
 import numpy as np
 import pandas as pd
 
