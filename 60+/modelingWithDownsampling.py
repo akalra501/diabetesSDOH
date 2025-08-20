@@ -1,34 +1,16 @@
-# ===== Hybrid Resampling with SMOTE + Downsampling =====
-# This script trains three classifiers (Logistic Regression, Random Forest, XGBoost)
-# on a diabetes label using a hybrid resampling approach:
-#   1) Downsample the majority class (non-diabetics) to reduce imbalance
-#   2) Apply SMOTE within the pipeline (after preprocessing) to oversample the minority class
-# It then prints evaluation metrics and plots ROC and PR curves.
-
 import numpy as np
 import pandas as pd
-
-# Model selection & preprocessing utilities
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
-
-# Metrics
-from sklearn.metrics import (
-    classification_report, confusion_matrix, roc_auc_score,
-    average_precision_score, accuracy_score
-)
-
-# Models
+from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score,average_precision_score, accuracy_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from imblearn.over_sampling import SMOTE
 from imblearn.pipeline import Pipeline as ImbPipeline
 from xgboost import XGBClassifier
-
-# Plotting
 import os, numpy as np, matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, precision_recall_curve, roc_auc_score, average_precision_score
 

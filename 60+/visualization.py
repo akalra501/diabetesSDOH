@@ -110,7 +110,7 @@ if 'ageGroup' in df.columns and 'diabetesStatusMapped' in df.columns:
 if 'educationLevelMapped' in df.columns and 'diabetesStatusMapped' in df.columns:
     plt.figure(figsize=(10, 6))
     axEdu = sns.countplot(data=df, x='educationLevelMapped', hue='diabetesStatusMapped', palette='plasma')
-    plt.title('Diabetic vs. Non-Diabetic Across Education Levels (60+)')
+    plt.title('Diabetic vs. Non-Diabetic Across Education Levels')
     plt.xlabel('Education Level')
     plt.ylabel('Count')
     plt.xticks(rotation=45, ha='right')
@@ -126,7 +126,7 @@ if 'educationLevelMapped' in df.columns and 'diabetesStatusMapped' in df.columns
 if 'raceEthnicityMapped' in df.columns and 'diabetesStatusMapped' in df.columns:
     plt.figure(figsize=(10, 6))
     axRace = sns.countplot(data=df, x='raceEthnicityMapped', hue='diabetesStatusMapped', palette='magma')
-    plt.title('Diabetic vs. Non-Diabetic Across Race/Ethnicity (60+)')
+    plt.title('Diabetic vs. Non-Diabetic Across Race/Ethnicity')
     plt.xlabel('Race / Ethnicity')
     plt.ylabel('Count')
     plt.xticks(rotation=45, ha='right')
@@ -143,7 +143,7 @@ if 'HasInsurance' in df.columns and 'diabetesStatusMapped' in df.columns:
     df['hasInsuranceMapped'] = df['HasInsurance'].map({0: 'No', 1: 'Yes'})
     plt.figure(figsize=(6, 5))
     axIns = sns.countplot(data=df, x='hasInsuranceMapped', hue='diabetesStatusMapped', palette='coolwarm')
-    plt.title('Diabetic vs. Non-Diabetic by Insurance Coverage (60+)')
+    plt.title('Diabetic vs. Non-Diabetic by Insurance Coverage')
     plt.xlabel('Has Insurance')
     plt.ylabel('Count')
     # Keep original labels: % within insurance = Yes/No
@@ -170,7 +170,7 @@ if 'incomePovertyRatioCapped' in df.columns and 'diabetesStatusMapped' in df.col
             bins=20
         )
         plt.ylabel('Percent of Total (%)')
-        title_suffix = '(Percent of Total, 60+)'
+        title_suffix = '(Percent of Total)'
     except TypeError:
         weights = np.ones(len(df)) * (100.0 / len(df))
         axIncome = sns.histplot(
@@ -183,13 +183,13 @@ if 'incomePovertyRatioCapped' in df.columns and 'diabetesStatusMapped' in df.col
             bins=20
         )
         plt.ylabel('Percent of Total (%)')
-        title_suffix = '(Percent of Total via Weights, 60+)'
+        title_suffix = '(Percent of Total via Weights)'
 
     plt.title(f'Diabetic vs. Non-Diabetic by Income-to-Poverty Ratio {title_suffix}')
     plt.xlabel('Income-to-Poverty Ratio (Capped at 95th percentile)')
 
     # Stats annotation (means/medians/SDs)
-    statsText = "Income Ratio Stats (60+):\n\n"
+    statsText = "Income Ratio Stats:\n\n"
     for status, groupDf in df.groupby('diabetesStatusMapped'):
         vals = groupDf['incomePovertyRatioCapped'].dropna()
         if len(vals) == 0:
