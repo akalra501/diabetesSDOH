@@ -70,10 +70,6 @@ print(f"Test prevalence (diabetic=1): {yTest.mean():.3f}")
 
 
 # 4) Preprocessing
-# Two ColumnTransformers:
-#   - preprocessLR: numeric median-impute + standardize; categorical impute + OHE
-#   - preprocessTree: numeric median-impute; categorical impute + OHE (no scaling for trees)
-
 preprocessLR = ColumnTransformer(
     transformers=[
         ("num", Pipeline([("imp", SimpleImputer(strategy="median")), ("scaler", StandardScaler())]), numCols),
